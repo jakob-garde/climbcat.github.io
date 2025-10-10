@@ -42,7 +42,8 @@ Example 02:
 Hand-rolled a parser for the mcstas DSL
 
 First of all, why (for users!)? The problem of error codes / API usability.
-Secondary advantages (for devs!): Ease of build/development, fewer dependencies, straight-forward code, access to internals.
+Secondary advantages (for devs!): Ease of build/development, fewer dependencies,
+    straight-forward code, access to internals.
 Disadvantages: Casually reading the code.
 Results, demonstrating that it does its thing, timing.
 
@@ -65,7 +66,8 @@ What I learned:
 - js is hard to debug (I understand why peopl would use TypeScript)
 - working with d3js was really cool (but slow)
 - OOP style becomes unmanageable
-- Why write things in JS when I am writing it as though it was C? -> The web is probably best for making websites, not custom applications!
+- Why write things in JS when I am writing it as though it was C? -> The web
+    is probably best for making websites, not custom applications!
 
 
 Example 04:
@@ -91,7 +93,7 @@ Why? It's a tech demo
 What I learned as a tech demo: Technical things
 - how to robustly drag & rotate an orbit camera
 - projected ray collisions with geometric objects
-- robustly drag objects within the plane, and along an axis (without any goddamn jitter)
+- robustly drag objects within the plane, and along an axis
 - the simplicity and robustness of immediate-mode rendering
 
 
@@ -99,7 +101,8 @@ Example 05:
 
 Step-wise mcstas code generation and porting
 
-Why port to C++ and partical code generation? Because this can make the static DSL become a dynamic, visual editor
+Why port to C++ and partical code generation? Because this can make the
+static DSL become a dynamic, visual editor
 
 
 Example 06:
