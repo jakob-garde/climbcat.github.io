@@ -4,33 +4,31 @@ title: About
 permalink: /about/
 ---
 
+<!--
 ![image tooltip here](/assets/resized.jpg){: style="float: right"}
+-->
 
-### Jakob Garde - R&D Software Developer
+### Jakob Garde
 
 Software and systems developer with over 15 years of experience.
 
-Originally graduated in physics, I discovered my strength in software development, focusing on simulation and data processing. Today, I have a particular passion for systems programming and performance.
+This page dives into and explores various side projects.
 
-Over the years many things were developed, see my [linkedin] for details.
+See my [linkedin] for details / CV.
 
 
-### Re-inventing the Wheel
+### Inventing Wheels
 
-Recently I had the exciting opportunity to work independently and develop new skills (AKA being unemployed).
-For a tech-focused person like me, the hours are easy enough to fill, but that is only half the job.
+Recently I had the opportunity to work independently and develop new skills.
 
-The other half being presentation and out-reach, the mysterious "human factor". Please feel free to reach out if you find some of this stuff interesting,
-and we may have a coffee/beer/glass of water and talk about what's down in tech in the Greater Copenhagen/Malmö Metropolitan Area.
+For a tech-oriented person like me, coding and development can fill hours every day, and that is at least half the job.
 
-But why re-invent the wheel?
+The best way to learn about wheels is to build them. And a great way to become a better programmer is to write a lot of code - and present the work.
 
-The best way to learn about wheels, is to build them, and our industry sure has a lot of wheels.
-However there is also the chasis, windows and steering, and putting it all into a cohesive whole.
-
-The write-ups are hopefully targetting both the technical and the less techincal reader, because who reads raw, self-documenting code in 2025, anyways.
+Here's my first article, it is about custom parsing and [meta-programming in C].
 
 Project source code is posted [on github].
 
-[linkedin]: href="https://www.linkedin.com/in/jakob-garde-1967629/
+[linkedin]: https://www.linkedin.com/in/jakob-garde-1967629/
 [on github]: https://github.com/climbcat
+[meta-programming in C]: https://google.com
