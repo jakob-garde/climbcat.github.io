@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-10-14T10:33:26+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Portfolio</title><subtitle>Systems development</subtitle><entry><title type="html">Manually parsing the McStas DSL</title><link href="http://localhost:4000/2025/10/13/parser.html" rel="alternate" type="text/html" title="Manually parsing the McStas DSL" /><published>2025-10-13T00:00:00+02:00</published><updated>2025-10-13T00:00:00+02:00</updated><id>http://localhost:4000/2025/10/13/parser</id><content type="html" xml:base="http://localhost:4000/2025/10/13/parser.html"><![CDATA[<h1 id="text-parsing-is-fun">Text parsing is fun</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-10-15T11:57:16+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Portfolio</title><subtitle>Systems development</subtitle><entry><title type="html">Manually parsing the McStas DSL</title><link href="http://localhost:4000/2025/10/13/parser.html" rel="alternate" type="text/html" title="Manually parsing the McStas DSL" /><published>2025-10-13T00:00:00+02:00</published><updated>2025-10-13T00:00:00+02:00</updated><id>http://localhost:4000/2025/10/13/parser</id><content type="html" xml:base="http://localhost:4000/2025/10/13/parser.html"><![CDATA[<h1 id="text-parsing-is-fun">Text parsing is fun</h1>
 
 <p><em>This article is a project description, but first, a disclaimer and some context. For years I worked on the open-source software package McStas as a core developer at DTU Physics (2015-2020), which is why I know so much about the McStas core software. Currently re-visiting the project on a completely volountary and independent basis. All statements below are thus reflections of my personal findings and opinions, and nothing more.</em></p>
 
@@ -6,11 +6,9 @@
 
 <p>Parsing sometimes gets a bad rep afterall, and seems like a thing that “should just work”, something we should have tools for.</p>
 
-<p>Plenty og tools were indeed written during the Bell Labs era and given names like Yacc or (later on) bison. These were ancestors of the infamous GNU, one of the most hoofed software animal coming out of the 1980’s.</p>
+<p>Plenty og tools were indeed written during the Bell Labs era and given names like Yacc or (later on) BISON. These were ancestors of the infamous GNU, one of the most hoofed software animal coming out of the 1980’s.</p>
 
-<p>Yet at closer look, parsing is not just about reading JSON files or writing custom compilers, supposedly a common practice in those days. It probably owes its fame to one of the wildest  programming paradigms: META programming.</p>
-
-<p>If I were to explain the importance of meta programming to a non-programmer, I’d point to the widespread usage of scripting languages like Python, JavaScript, Ruby, and Perl. All very popular and with the “reflection” programming-language feature which is notably lacking in C.</p>
+<p>Yet at closer look, parsing is not just about reading JSON files or writing custom compilers (a common practice in those days). It is the first component of one of the most powerful programming paradigms: META programming.</p>
 
 <h1 id="what-is-meta-programming">What is META programming?</h1>
 
@@ -22,27 +20,29 @@
 
 <p>Despite the potential for obscurity, meta programming comes with enormous power, and allows us to do many things that are quite clever and time-saving.</p>
 
+<p>Were I to explain the importance of meta programming to a non-programmer, I’d point to the widespread usage of scripting languages like Python, JavaScript, Ruby, and Perl. All very popular - and, amongst other things, have the “reflection” programming-language feature which is notably lacking in C.</p>
+
+<p>Therefore, C programmers who wanted to do meta programming had to manually parse configuration files and generate their own code. Sure it took a little longer than writing a Python script, but it was a straight-forward method that worked just fine.</p>
+
 <h1 id="are-we-still-using-that">Are we still using that?</h1>
 
 <p>Also McStas, a physics simulation package originally dating from 1997, was indeed written by people wielding the power of META. As a physics simulation, performance requirements dictated that it was written in C. Thus the meta program had to output C code.</p>
 
-<p>Why not write the meta program in C, too? This was not as uncommon as it sounds, back then, and to this day, C is very dependable and portable.</p>
+<p>Why not write the meta program in C, too? This was a dependable and portable, and from a certain perspective, a pretty great choice. However first, we should spend a little more with those software animals mentioned above, specifically BISON and FLEX.</p>
 
-<p>So from a certain perspective it was a pretty great choice. However let’s circle back to those furry software animals mentioned above, specifically BISON and FLEX.</p>
-
-<p>The BISON/FLEX combo is known as a parser generator. It is not just a parser, nor just a code generator. It is a parser that uses code generation to generate a parser. Spoken plainly, it is a C program that takes a few configuration files and outputs C source code for a parser.</p>
+<p>The BISON/FLEX combo is known as a parser generator. It is not just a parser, not just a code generator, but both, and makes meta programming in C easier. A tool that reads in configuration files and outputs C source-code for a program that parses text according to specifications in those configuration files.</p>
 
 <h1 id="overly-contrived-example">Overly contrived example</h1>
 
-<p>In the BISON/FLEX system you write rules that dictate how input text must be structured to be accepted as a valid meta program - meaning the allowed words, sentences and sequences.</p>
+<p>In the BISON/FLEX system you write rules that dictate how the meta program / an input text file should be structured. You specify “grammar rules” for the allowed words, sentences and sequences of the DSL.</p>
 
-<p>For example, let’s insist that an email must contain the following elements:</p>
+<p>For example, if we wanted to parse emails, we could say that it should contain the following sections:</p>
 
 <pre>
 "email: greeting body farewell"
 </pre>
 
-<p>Breaking it down further, the “greeting” could be defined as</p>
+<p>Breaking it down further, the individual elements should be defined as well:</p>
 
 <pre>
 "greeting: formality name"
@@ -50,23 +50,34 @@
 "farewell: formality name"
 </pre>
 
-<p>With this, we must go on to define what qualifies as a “formality” and a “name”. A name must be capitalized, a formality belongs to a group of specific phrases, and so on and so forth. If we keep up this definition process, we will at some point have described an email well enough for our purposes.</p>
+<p>And even further:</p>
 
-<p>This is what’s called a “domain specific language” or DSL for short.</p>
+<pre>
+"formality: 'Hello' or 'Dear'"
+"body: TEXT"
+"farewell: 'Regards' or TEXT"
+"name: FLCAP_TEXT
+</pre>
 
-<p>Notice how the rules above are written in an abstract and beautiful way that resembles mathematics. Amazing, isn’t it?</p>
+<p>A name must be first-letter capitalized, a formality belongs to a group of specific phrases, and so on and so forth. If we keep up this definition process for long enough, we will at some point have described an email well enough for our purposes. Then we could start parsing emails and do something with it.</p>
+
+<p>The resulting rules for writing this sort of email is called a “domain specific language” or DSL for short.</p>
+
+<p>Notice how the rules above are written in an abstract and beautiful way that resembles mathematics? This makes the system simpler to deal with; we no longer need to write an involved parser program, but can instead just write concise rules in a config file.</p>
 
 <h1 id="experimental-physics-cross-over">Experimental physics cross-over</h1>
 
+<p>With all this in mind, let’s have a look at a real life meta-programming example.</p>
+
 <p>Imagine an experimental physicist with sporadic access to highly expensive and complex equipment. This “instrument” must be configured exactly right for the experiment to be a success - but we don’t have access to it beforehand.</p>
 
-<p>In order to solve this connundrum, we resort to simulation. We simulate the experiment in software, allowing us to tweak the setup and plan the (virtual) experiment. The simulation could even show you how to configure the equipment optimally, which is great, then we don’t have to spend (as much) time tuning the instrument on-site.</p>
+<p>In order to solve this connundrum, experimental physicists will often resort to simulation. We simulate the experiment in software, allowing us to tweak the setup and plan the experiment. The simulation could even show you how to configure the equipment optimally, which is great, then we don’t have to spend as much time tuning the instrument on-site.</p>
 
-<p>Since simulation code is fickle and complicated, we use-existing software components which match the physical instrument as closely as possible. We don’t want to write the whole simulation program from scratch - although people in the real reality actually did for years - until better options was developed. One of these “better options” is called McStas.</p>
+<p>Initially, people wrote the whole simulation program from scratch - until standardized and reliable options were developed.</p>
 
-<p>In other words, people created easier ways to configure their simulation in terms of pre-written software components. To keep it all neat and tight, they used BISON/FLEX to create the parser that would make all this happen.</p>
+<p>One of these options is McStas.</p>
 
-<p>This parser would convert two types of configuration files - components and instruments - into finished simulation programs. This tool is then called mcstas (and mcxtrace), and the  rules that govern how these configuration files must be written, is called the McStas DSL.</p>
+<p>To keep it all neat and tight, it uses BISON/FLEX to define a text parser. This parser would convert two types of configuration files - components and instruments - into finished simulation programs. The rules that governe these config files is what is meant by “the McStas DSL”.</p>
 
 <h1 id="mcstas-is-not-optimized-for-my-kind-of-change">McStas is not optimized for (my kind of) change</h1>
 
@@ -114,19 +125,19 @@
 
 <p>My opinion here is that when experimenting with core algorithms is inconvenient, it happens less often.</p>
 
-<h1 id="can-legacy-code-be-fixed-or-salvaged">Can legacy code be fixed or salvaged?</h1>
+<h1 id="can-legacy-code-be-salvaged">Can legacy code be salvaged?</h1>
 
-<p>Writing a new McStas DSL parser and code generator seemed unfeasible or not worth the time.</p>
+<p>Writing a new McStas DSL parser and code generator seemed unfeasible or not worth it.</p>
 
-<p>People built tools on top of the core instead, developed onion rings of software stack - as you do. Mostly, the basic simulation tools seem to rest quietly below. Notable exceptions is the Union components and advanced event logging. (However, my awareness is not completely up to date here).</p>
+<p>Instead, people built tools on top of the core and developed onion rings of software stack - as you do. The basic simulation code that did all of the actual simulation work, seemed to rest quietly below, neatly wrapped away, steeped in CMake and Python. Notable innovative exceptions is the Union components and advanced event logging.</p>
 
-<p>The problem isn’t that the people aren’t willing or able to innovate - but that it was become harder to do so as time goes by, onion layers build up, and knowledge is invested elsewhere.</p>
+<p>My critique isn’t that the people aren’t willing or able to innovate - but that it becomes harder to do so as time and stack layers build up, and knowledge is invested elsewhere. Which is arguably a shame. We know how innovative ingenious people can be when the proper tools are available.</p>
 
-<p>At some point I needed a programming challenge and started writing a parser for the McStas DSL from scratch in C, this was during the 2020 pandemic. Writing it was a delightful experience and a few months ago I took on the task of modernizing that code.</p>
-
-<p>Currently I wanted a nice prototype, and hopefully present an alternative strategy and viable method. A working version of this parser is available here: <a href="https://github.com/climbcat/mcparse">mcparse</a>.</p>
+<p>At some point I needed a programming challenge, and started writing a parser for the McStas DSL from scratch in C. This was during the 2020 pandemic. Writing it was a delightful experience, so a few months ago I took on the task of modernizing that code. Aiming at a serious prototype and to present a viable, alternative take on the mcstas core layer.</p>
 
 <h3 id="testing-the-custom-parser">Testing the custom parser</h3>
+
+<p>A working version of my custom parser is available here: <a href="https://github.com/climbcat/mcparse">mcparse</a></p>
 
 <p>Parser output on the bulk data: <a href="https://github.com/climbcat/mcparse/blob/main/example_output_0.1.0.md">mcparse/example_output_0.1.0.md</a></p>
 
@@ -134,14 +145,28 @@
 
 <h1 id="what-custom-code-brings-to-the-table">What custom code brings to the table</h1>
 
-<p>Yet another project called <a href="https://github.com/climbcat/mctrace">mctrace</a> was developed in these past months. Its purpose is to show the runtime viability of the <a href="https://github.com/climbcat/mcparse">mcparse</a> generated code as it combines with other custom algorithms, and the ported/re-packaged McStas core (static) simulation library, now named <a href="https://github.com/climbcat/mctrace/blob/main/simcore/simcore.h">simcore.h</a> and <a href="https://github.com/climbcat/mctrace/blob/main/simcore/simlib.h">simlib.h</a>.</p>
+<p>Reading the generated mcstas simulation code it becomes clear that it is monolithic and not nearly as modular as it could be. For example, it generates types and initialization code, instead of extracting this into helper libraries. All library code is in-lined and there are duplicate sections targetting various hardware platforms.</p>
 
-<p>The <a href="https://github.com/climbcat/mctrace">mctrace</a> project currently produces run-time simulation output and mcdisplay- and mcplot-like visuals. The main point was to develop, test and validate the code generated by mcparse.</p>
+<p>Another issue is the way that geometry is handled internally. Today, pepole always use 4x4 affine transformation matrices for their 3D code, but the mcstas implementation used 3x3 rotaion matrices and a separate transformation vector. This is just harder to scrutinize and work with.</p>
 
-<p>The present code-base is a re-imagining of the mcstas core. The physics are exactly the same, yet now with many more potential capabilities. It enables developers with C knowledge to write their own, custom ray-tracing procedures for McStas. Every (ported) component and instrument is available as a C++ source file.</p>
+<p>Since the parser was already halfway done, I decided to build a code generator into it. It outputs very modular code: One .h file for each component used plus one meta file in total, and one .h file for each instrument. The rest is library code. These generated files can be included ad-lib into any project along with now-salvaged runtime simulation libraries.</p>
 
-<p>It is in an early version with limited components and a single tested instrument, but still - the hard problems and road-blocks have all been solved. The programming pathways are avalable for developers to dynamically configure and combine components as you please, apply algorithms, frameworks, methods, runtime data analysis’, custom visuals and data formats, all with full C++ compliance.</p>
+<p>The salvaged McStas static core runtime simulation code is found here: <a href="https://github.com/climbcat/mctrace/blob/main/simcore/simcore.h">simcore.h</a> and <a href="https://github.com/climbcat/mctrace/blob/main/simcore/simlib.h">simlib.h</a>.</p>
 
-<p>Adding such advanced capabilities to a complex system becomes possible when the code is readily available, modular, quick and easy to debug, and runs without any required frameworks or build systems.</p>
+<p>Another project called <a href="https://github.com/climbcat/mctrace">mctrace</a> was developed to demonstrate runtime viability of the code generated by this alternative strategy. It combines custom algorithms with code-generated component- and instrument code. It produces real-time simulation output and mcdisplay- and mcplot-like visuals within a simple wireframe-based 3D user interface.</p>
 
-<p>So, what’s the catch? The production/release version is a ways off and likely never to be realized, since noone is paying me to do this. It was a lot of fun though, learned a whole lot, and I hereby consider the McStas DSL wheel re-invented!</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Text parsing is fun]]></summary></entry></feed>
+<p>The main point was to develop, test and validate the code generated by mcparse, but also features the modernized component initialization using 4x4 affine transformations, custom visualization hooks for mcdisplay/mcplot, and exemplifies how to write custom trace algorithms, logging and visualization, and more.</p>
+
+<h1 id="liberate-verified-physics-code">Liberate verified physics code</h1>
+
+<p>Years and decades has gone into writing, testing and verifying much of the mcstas components, which make them quite valuable. Unfortunately these gems were not readily available to use in different contexts.</p>
+
+<p>Developers with C knowledge can take the project and write their own, custom ray-tracing procedures for McStas. Every ported component and instrument is available as a C++ source file, and porting more components is straight-forward.</p>
+
+<p>The mcparse/mctrace project is imited as any early version, but still - most hard problems and road-blocks have been solved: Demonstrated pathways to dynamically configure and combine as you please, apply algorithms, frameworks, methods, runtime data analysis’, custom visuals and data formats, all with full C++ compliance.</p>
+
+<p>Adding such advanced capabilities to a complex system becomes possible when the code is readily available, modular, quick and easy to run and debug, and does so without any required frameworks or build systems.</p>
+
+<p>The physics is the same, yet now with many more possible capabilities.</p>
+
+<p>So, what’s the catch? The production/release version is a ways off. Realizing it would require a degree of funding and community support. It was a lot of fun though, learned a whole lot, and hereby consider the McStas DSL wheel re-invented!</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Text parsing is fun]]></summary></entry></feed>
