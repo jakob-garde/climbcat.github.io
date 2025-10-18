@@ -32,11 +32,13 @@ theme: minima
 #plugins:
 #  - jekyll-feed
 
-analytics:
-  provider: "google-gtag"
-  google:
-    tracking_id: "G-K89N784GJJ"
-    anonymize_ip: false # default 
+#analytics:
+#  provider: "google-gtag"
+#  google:
+#    tracking_id: "G-K89N784GJJ"
+#    anonymize_ip: false # default 
+
+google_analytics: "G-K89N784GJJ"
 
 # Exclude from processing.
 # The following items will not be processed, by default.
