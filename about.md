@@ -30,6 +30,6 @@ Here's my first article, it is about custom parsing and [meta-programming in C].
 Project source code is posted [on github].
 
 [linkedin]: https://www.linkedin.com/in/jakob-garde-1967629/
-[on github]: https://github.com/climbcat
+[on github]: https://github.com/jakob-garde
 [meta-programming in C]: {% post_url 2025-10-13-parser %}
 
